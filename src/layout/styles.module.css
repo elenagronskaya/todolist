@@ -1,0 +1,11 @@
+/* .layout{
+    display: grid;
+    position: relative;
+    grid-template-rows: auto;
+    grid-template-columns: repeat(7, 1fr);
+    column-gap: 25px;
+    grid-template-areas: 
+    "header header header header header header header"
+    ". . main main main . .";
+    
+} */
