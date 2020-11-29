@@ -5,12 +5,17 @@ import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import CardContent from '@material-ui/core/CardContent';
 import { useSelector, useDispatch } from 'react-redux';
-import { ADD_TODO } from '../../redux/actions';
 import { Button } from '@material-ui/core';
 import { useState } from 'react';
-import { selectTodos } from '../../redux/selectors';
+import { selectTodos, selectAlert } from '../../redux/selectors';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 
 
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  }
+  
 
 const useStyles = makeStyles({
     root: {
@@ -31,8 +36,13 @@ const useStyles = makeStyles({
 function TodosList (){
     const classes = useStyles();
     const todos = useSelector(selectTodos);
+    const alert = useSelector(selectAlert);
     const dispatch = useDispatch();
     const [title, setTitle] = useState('');
+    const handleClose = (e) => {
+        dispatch({type: 'REMOVE_ALERT'})
+    }
+
 
     const handleChange = (e) => {
         setTitle(e.target.value)
@@ -46,11 +56,12 @@ function TodosList (){
             date: newDate,
             title,
         }
-        dispatch({type: 'ADD_TODO', payload: {todoItem }});
+        dispatch({type: 'ADD_TODO', payload: {todoItem: todoItem }});
         setTitle('');
+        dispatch({type: 'SET_ALERT'})
     }
     return(
-        
+        <>
         <Card className={classes.root} elevation={3}>
         <form onSubmit={addTodo}>
             <TextField onChange={handleChange} value={title} label="addTodo" variant="outlined" fullWidth/>
@@ -65,6 +76,12 @@ function TodosList (){
             
             ))}
         </Card> 
+         <Snackbar open={alert.show}>
+            <Alert onClose={handleClose} severity="success">
+                Todo item is created successful
+            </Alert>
+        </Snackbar>
+        </>
     )
 }
 

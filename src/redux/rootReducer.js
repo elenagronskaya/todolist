@@ -1,21 +1,25 @@
 import{ handleActions} from 'redux-actions';
-import { addTodo, removeTodo} from './actions';
+import { addTodo, removeTodo, setAlert, removeAlert} from './actions';
 
 const newDate = new Date().toISOString();
 
 const initialState = {
-    
-todos: [ 
-    {
-        id: 'xgkdhgskruhgldk123',
-        date: newDate,
-        title: 'Initial todo Item',
+    todos: [ 
+        {
+            id: 'xgkdhgskruhgldk123',
+            date: newDate,
+            title: 'Initial todo Item',
+        },
+    ],
+    alert: {
+        show: false
     },
-    ]
 };
 
 
-// export const rootReducer = (state = initialState, action) => {
+
+
+// export const todosReducer = (state = initialState, action) => {
 //     switch(action.type){
 //         case'ADD_TODO': {
 //             const todoItem = action.todoItem;
@@ -36,8 +40,17 @@ export const rootReducer = handleActions ({
         todos: [
         ...state.todos,
         todoItem
-        ],
-}),
+        ]
+        }),
+    [setAlert]: (state, payload) => {
+        return{
+        ...state,
+        alert: {show:true},
+    }},
+    [removeAlert]: (state, payload) => ({
+        ...state,
+        alert: {show: false},
+    }),
     [removeTodo]: (state, {payload:{id}}) => 
         state.filter((item) => item.id !== id)
 }, initialState)
