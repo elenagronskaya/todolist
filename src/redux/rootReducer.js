@@ -1,18 +1,21 @@
-import{ handleActions} from 'redux-actions';
-import { addTodo, removeTodo, setAlert, removeAlert} from './actions';
+import { handleActions } from 'redux-actions';
+import { addTodo, deleteTodo, setAlert, removeAlert, toggleCompleteState} from './actions';
 
 const newDate = new Date().toISOString();
 
 const initialState = {
-    todos: [ 
+    todos: [
         {
             id: 'xgkdhgskruhgldk123',
             date: newDate,
             title: 'Initial todo Item',
+            isCompleted: false,
         },
     ],
     alert: {
-        show: false
+        show: false,
+        type: 'success',
+        msg: '',
     },
 };
 
@@ -34,24 +37,56 @@ const initialState = {
 //     }
 // };
 
-export const rootReducer = handleActions ({
-    [addTodo]: (state, {payload: {todoItem}}) => ({
+export const rootReducer = handleActions({
+    [addTodo]: (state, { payload: { todoItem } }) => ({
         ...state,
         todos: [
-        ...state.todos,
-        todoItem
+            ...state.todos,
+            todoItem
         ]
-        }),
-    [setAlert]: (state, payload) => {
-        return{
+    }),
+    [setAlert]: (state, { payload: { type, msg } }) => ({
+            ...state,
+            alert: {
+                show: true,
+                type,
+                msg
+            },    
+    }),
+    [toggleCompleteState]: (state, {payload: {id}}) => {
+        return {
         ...state,
-        alert: {show:true},
+        todos: [
+                        // ...state.todos.map((item) => 
+                        // {
+                        //     if(item.id === id) {
+                        //         item.isCompleted = !item.isCompleted;
+                        //     }
+                        //    return {...item};
+                        // })
+
+                        ...state.todos.map((item) => 
+                        {
+                            if(item.id === id) {
+                                item.isCompleted = !item.isCompleted;
+                            }
+                           return item;
+                        })
+
+                ]
     }},
+    
     [removeAlert]: (state, payload) => ({
         ...state,
-        alert: {show: false},
+        alert: { show: false },
     }),
-    [removeTodo]: (state, {payload:{id}}) => 
-        state.filter((item) => item.id !== id)
+    [deleteTodo]: (state, { payload: { id } }) => {
+        return {
+        ...state,
+        todos: [
+            ...state.todos.filter((item) => item.id !== id)
+        ]
+    }}
+        
 }, initialState)
 

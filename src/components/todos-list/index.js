@@ -10,6 +10,7 @@ import { useState } from 'react';
 import { selectTodos, selectAlert } from '../../redux/selectors';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
+import Checkbox from '@material-ui/core/Checkbox';
 
 
 function Alert(props) {
@@ -39,17 +40,35 @@ function TodosList (){
     const alert = useSelector(selectAlert);
     const dispatch = useDispatch();
     const [title, setTitle] = useState('');
+
     const handleClose = (e) => {
         dispatch({type: 'REMOVE_ALERT'})
     }
-
+    
 
     const handleChange = (e) => {
         setTitle(e.target.value)
+    };
+    
+    const deleteTodo = (id) => {
+        return () => { 
+            dispatch({type: 'DELETE_TODO', payload: { id }});
+            dispatch({type: 'SET_ALERT', payload: {type: 'success', msg: `${id} id has been deleted`}})
+    
+            }
+        
+    };
+    const toggleCompleteTodoState = (id) => {
+        return (e) => {
+ 
+        e.preventDefault();
+        dispatch({type:'TOGGLE_COMPLETE_STATE', payload:{id}})
+        }
     }
-
     const addTodo = (e) =>{
         e.preventDefault()
+
+        if(title) {
         const newDate = new Date().toISOString();
         const todoItem ={
             id: newDate,
@@ -58,7 +77,10 @@ function TodosList (){
         }
         dispatch({type: 'ADD_TODO', payload: {todoItem: todoItem }});
         setTitle('');
-        dispatch({type: 'SET_ALERT'})
+        dispatch({type: 'SET_ALERT', payload: {type: 'success', msg: 'Todo item is created successful'}})
+        }else{
+            dispatch({type: 'SET_ALERT', payload: {type: 'error', msg: 'Todo title is required'}})
+        }
     }
     return(
         <>
@@ -68,17 +90,20 @@ function TodosList (){
             <Button type='submit'>Add todo</Button>
             
         </form>
-        {todos.map(({id, title, date}) => (
+        {todos.map(({id, title, date, isCompleted}) => (
                 <CardContent key={id}>
+                    <Button onClick={deleteTodo(id)}>x</Button>
+                    <Checkbox checked={isCompleted} onChange={toggleCompleteTodoState(id)} inputProps={{ 'aria-label': 'primary checkbox' }} />
                     <Typography className={classes.title} color="textSecondary" variant="h5" component="h2">{title}</Typography>
                     <Typography className={classes.date}>{moment(date).format('MMMM Do YYYY, h:mm')}</Typography>
+                    
                 </CardContent>
             
             ))}
         </Card> 
          <Snackbar open={alert.show}>
-            <Alert onClose={handleClose} severity="success">
-                Todo item is created successful
+            <Alert onClose={handleClose} severity={alert.type}>
+                {alert.msg}
             </Alert>
         </Snackbar>
         </>
