@@ -11,6 +11,7 @@ import { selectTodos, selectAlert } from '../../redux/selectors';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import Checkbox from '@material-ui/core/Checkbox';
+import ClearIcon from '@material-ui/icons/Clear';
 
 
 function Alert(props) {
@@ -20,18 +21,25 @@ function Alert(props) {
 
 const useStyles = makeStyles({
     root: {
-      minWidth: 275,
-      marginBottom: 10,
-      
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
     },
+
+
     title: {
       fontSize: 18,
-      marginBottom: 10,
+      paddingRight:10,
       fontWeight: 700,
     },
+
     date: {
-      marginBottom: 12,
+      paddingRight: 25,
     },
+    button: {
+        cursor: "pointer",
+        
+    }
   });
 
 function TodosList (){
@@ -60,8 +68,6 @@ function TodosList (){
     };
     const toggleCompleteTodoState = (id) => {
         return (e) => {
- 
-        e.preventDefault();
         dispatch({type:'TOGGLE_COMPLETE_STATE', payload:{id}})
         }
     }
@@ -77,25 +83,26 @@ function TodosList (){
         }
         dispatch({type: 'ADD_TODO', payload: {todoItem: todoItem }});
         setTitle('');
-        dispatch({type: 'SET_ALERT', payload: {type: 'success', msg: 'Todo item is created successful'}})
         }else{
             dispatch({type: 'SET_ALERT', payload: {type: 'error', msg: 'Todo title is required'}})
         }
     }
     return(
         <>
-        <Card className={classes.root} elevation={3}>
+        <Card elevation={3}>
         <form onSubmit={addTodo}>
             <TextField onChange={handleChange} value={title} label="addTodo" variant="outlined" fullWidth/>
-            <Button type='submit'>Add todo</Button>
+            <Button type='submit' variant="contained" color="primary" fullWidth>Add todo</Button>
             
         </form>
-        {todos.map(({id, title, date, isCompleted}) => (
-                <CardContent key={id}>
-                    <Button onClick={deleteTodo(id)}>x</Button>
+        {todos.map(({id, title, date, isCompleted}) => ( 
+                <CardContent key={id} className={classes.root} >
                     <Checkbox checked={isCompleted} onChange={toggleCompleteTodoState(id)} inputProps={{ 'aria-label': 'primary checkbox' }} />
                     <Typography className={classes.title} color="textSecondary" variant="h5" component="h2">{title}</Typography>
-                    <Typography className={classes.date}>{moment(date).format('MMMM Do YYYY, h:mm')}</Typography>
+                    <Typography className={classes.date}>{moment(date).format('MM/DD/YYYY h:mm')}</Typography>
+                    <Button className={classes.button} onClick={deleteTodo(id)} variant="contained">
+                    <ClearIcon color="primary"></ClearIcon>
+                    </Button>
                     
                 </CardContent>
             

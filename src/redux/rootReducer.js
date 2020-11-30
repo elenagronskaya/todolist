@@ -43,7 +43,12 @@ export const rootReducer = handleActions({
         todos: [
             ...state.todos,
             todoItem
-        ]
+        ],
+        alert: {
+            show: true,
+            type: "success",
+            msg: "Todo item is created successful"
+        }  
     }),
     [setAlert]: (state, { payload: { type, msg } }) => ({
             ...state,
@@ -57,23 +62,14 @@ export const rootReducer = handleActions({
         return {
         ...state,
         todos: [
-                        // ...state.todos.map((item) => 
-                        // {
-                        //     if(item.id === id) {
-                        //         item.isCompleted = !item.isCompleted;
-                        //     }
-                        //    return {...item};
-                        // })
+            ...state.todos.map((item) => {
+                if (item.id === id) {
+                    item.isCompleted = !item.isCompleted;
+                }
+                return item;
+            })
 
-                        ...state.todos.map((item) => 
-                        {
-                            if(item.id === id) {
-                                item.isCompleted = !item.isCompleted;
-                            }
-                           return item;
-                        })
-
-                ]
+        ]
     }},
     
     [removeAlert]: (state, payload) => ({
