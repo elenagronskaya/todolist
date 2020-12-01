@@ -82,6 +82,7 @@ function TodosList (){
             title,
         }
         dispatch({type: 'ADD_TODO', payload: {todoItem: todoItem }});
+        dispatch({type: 'SET_ALERT', payload: {type: 'success', msg: 'Todo item is created successful'}})
         setTitle('');
         }else{
             dispatch({type: 'SET_ALERT', payload: {type: 'error', msg: 'Todo title is required'}})
