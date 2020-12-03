@@ -3,14 +3,17 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import HomePage from './pages/home';
 import Todos from './pages/todos';
 import Header from './components/header';
+import TodosDetailsPage from './pages/todos-details';
+import TodosList from './components/todos-list';
 
 function App() {
   return (
     <BrowserRouter>
         <Header/>
           <Switch>
-            <Route path="/" exact component={HomePage} />
-            <Route path="/todos" component={Todos} />
+            <Route exact path="/"  component={HomePage} />
+            <Route exact path="/todos" component={Todos} />
+            <Route path="/todos/:id" component={TodosDetailsPage} />
           </Switch>
     </BrowserRouter>
   );

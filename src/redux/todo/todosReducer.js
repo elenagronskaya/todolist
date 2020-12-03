@@ -1,23 +1,15 @@
 import { handleActions } from 'redux-actions';
-import { addTodo, deleteTodo, toggleCompleteState} from './actions';
-
-
+import { addTodo, deleteTodo, toggleCompleteState,
+fetchTodosRequest, fetchTodosSuccess, fetchTodosError} from './actions';
 
 const newDate = new Date().toISOString();
 const initialState = {
-    todos: [
-        {
-            id: 'xgkdhgskruhgldk123',
-            date: newDate,
-            title: 'Initial todo Item',
-            isCompleted: false,
-        },
-    ],
-    // alert: {
-    //     show: false,
-    //     type: 'success',
-    //     msg: '',
-    // },
+    loading: false,
+    error: null,
+    todos: [{date : newDate,
+    id : "kasdJGKkd234321Gdks23Dkkdj3",
+    title : "Init Todo List"}],
+  
 };
 export const todosReducer = handleActions({
     [addTodo]: (state, { payload: { todoItem } }) => ({
@@ -26,13 +18,7 @@ export const todosReducer = handleActions({
             ...state.todos,
             todoItem
         ],
-        // alert: {
-        //     show: true,
-        //     type: "success",
-        //     msg: "Todo item is created successful"
-        // }  
     }),
-    
     [toggleCompleteState]: (state, {payload: {id}}) => {
         return {
         ...state,
@@ -43,17 +29,31 @@ export const todosReducer = handleActions({
                 }
                 return item;
             })
-
         ]
     }},
-    
     [deleteTodo]: (state, { payload: { id } }) => {
         return {
         ...state,
         todos: [
             ...state.todos.filter((item) => item.id !== id)
         ]
-    }}
-        
+    }},
+    [fetchTodosRequest] : (state) => ({
+        ...state,
+        error: null,
+        loading: true,
+    }
+    ),
+    [fetchTodosSuccess] : (state, {payload: {todos}}) => ({
+        ...state,
+        loading: false,
+        todos,
+    }),
+    [fetchTodosError] : (state, {payload}) => ({
+        ...state,
+        loading: false,
+        error: payload,
+        todos: [],
+    }),
 }, initialState)
 

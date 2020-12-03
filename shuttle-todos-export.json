@@ -1,0 +1,32 @@
+{
+  "todos" : {
+    "kasdJGKkd234321Gdks23Dkkdj3" : {
+      "date" : "2020-11-29T15:31:08.491Z",
+      "id" : "kasdJGKkd234321Gdks23Dkkdj3",
+      "title" : "Init Todo List"
+    }
+  },
+  "notes" : {
+    "323kdajsdkfal23Gdks" : {
+      "id" : "323kdajsdkfal23Gdks",
+      "title": "Learn HTML",
+      "date" : "2020-11-29T15:31:08.491Z",
+      "todoItemId": "kasdJGKkd234321Gdks23Dkkdj3",
+      "isCompleted": true
+    },
+    "dkaHgdks3421dsk9Kckskal" : {
+      "id" : "dkaHgdks3421dsk9Kckskal",
+      "todoItemId": "kasdJGKkd234321Gdks23Dkkdj3",
+      "title": "Learn CSS",
+      "date" : "2020-11-29T15:31:08.491Z",
+      "isCompleted": true
+    },
+    "Hdskas32Xskda3kask77sdk" : {
+      "id" : "Hdskas32Xskda3kask77sdk",
+      "todoItemId": "kasdJGKkd234321Gdks23Dkkdj3",
+      "title": "Learn Javascript",
+      "date" : "2020-11-29T15:31:08.491Z",
+      "isCompleted": false
+    }
+  }
+}
