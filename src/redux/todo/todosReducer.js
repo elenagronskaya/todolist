@@ -1,12 +1,17 @@
 import { handleActions } from 'redux-actions';
 import { addTodoSuccess, addTodoRequest, deleteTodoSuccess, deleteTodoError, deleteTodoRequest, addTodoError,toggleCompleteState,
-fetchTodosRequest, fetchTodosSuccess, fetchTodosError} from './actions';
+fetchTodosRequest, fetchTodosSuccess, fetchTodosError,
+getTodoByIdRequest, getTodoByIdError, getTodoByIdSuccess} from './actions';
 
 
 const initialState = {
     loading: false,
     error: null,
     todos: [],
+    todoDetailItem: {
+        title: '',
+        date: '',
+    }
   
 };
 export const todosReducer = handleActions({
@@ -80,6 +85,24 @@ export const todosReducer = handleActions({
         loading: false,
         error: payload,
         todos: [],
+    }),
+    [getTodoByIdRequest] : (state) => ({
+        ...state,
+        error: null,
+        loading: true,
+    }
+    ),
+    [getTodoByIdSuccess] : (state, {payload: {todoItem}}) => {
+          return {
+        ...state,
+        loading: false,
+        todoDetailItem: todoItem,
+    }},
+    [getTodoByIdError] : (state, {payload}) => ({
+        ...state,
+        loading: false,
+        error: payload,
+        // todoDetailItem: null,
     }),
 
 }, initialState)

@@ -19,20 +19,23 @@ export const getTodos = async () => {
     
 };
 
-export const createTodo = async ([todoItem]) =>{
+export const createTodo = async (todoItem) =>{
     const response = await axios.post(`${url}/todos.json`, {...todoItem}) ;
     return response;
 }
 
 export const updateTodo = async ([todoItem]) =>{
  
-    const response =  axios.patch(`${url}/todos/${todoItem.id}.json`, {...todoItem}) ;
+    const response =  await axios.patch(`${url}/todos/${todoItem.id}.json`, {...todoItem}) ;
     return response;
 }
 export const deleteTodo = async (id) => {
     await axios.delete(`${url}/todos/${id}.json`);
 }
 
-
+export const fetchTodoById = async (id) => {
+    const response =  await axios.get(`${url}/todos/${id}.json`) ;
+    return response.data;
+}
 
 
