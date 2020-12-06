@@ -1,24 +1,37 @@
 import { handleActions } from 'redux-actions';
-import { addTodo, deleteTodo, toggleCompleteState,
+import { addTodoSuccess, addTodoRequest, deleteTodoSuccess, deleteTodoError, deleteTodoRequest, addTodoError,toggleCompleteState,
 fetchTodosRequest, fetchTodosSuccess, fetchTodosError} from './actions';
 
-const newDate = new Date().toISOString();
+
 const initialState = {
     loading: false,
     error: null,
-    todos: [{date : newDate,
-    id : "kasdJGKkd234321Gdks23Dkkdj3",
-    title : "Init Todo List"}],
+    todos: [],
   
 };
 export const todosReducer = handleActions({
-    [addTodo]: (state, { payload: { todoItem } }) => ({
+    [addTodoSuccess]: (state, { payload: { todoItem } }) => {
+        return {
         ...state,
         todos: [
             ...state.todos,
             todoItem
         ],
+        error: null,
+        loading: false,
+    }},
+    [addTodoError] : (state, {payload}) => { 
+        return  {
+        ...state,
+        loading: false,
+        error: payload,
+    }},
+    [addTodoRequest] : (state) => ({
+        ...state,
+        error: null,
+        loading: true,
     }),
+
     [toggleCompleteState]: (state, {payload: {id}}) => {
         return {
         ...state,
@@ -31,13 +44,26 @@ export const todosReducer = handleActions({
             })
         ]
     }},
-    [deleteTodo]: (state, { payload: { id } }) => {
+    [deleteTodoSuccess]: (state, { payload: { id } }) => {
         return {
         ...state,
         todos: [
             ...state.todos.filter((item) => item.id !== id)
-        ]
+        ],
+        loading: false,
     }},
+
+    [deleteTodoError] : (state, {payload}) => ({
+        ...state,
+        loading: false,
+        error: payload,
+    }),
+    [deleteTodoRequest] : (state) => ({
+        ...state,
+        error: null,
+        loading: true,
+    }),
+
     [fetchTodosRequest] : (state) => ({
         ...state,
         error: null,
@@ -55,5 +81,6 @@ export const todosReducer = handleActions({
         error: payload,
         todos: [],
     }),
+
 }, initialState)
 
