@@ -160,10 +160,13 @@ function* ToggleCompleteNoteState ({payload:{note}}){
     yield put(toggleCompleteNoteStateRequest())
     
     try{
-        yield call(apiUpdateNote, note);
+        debugger;
+        yield call(apiUpdateNote, {note});
+        debugger;
         yield put(toggleCompleteNoteStateSuccess({note}))
     }catch(error)
     {
+        debugger;
         yield put(toggleCompleteNoteStateError(error))
     }
 }

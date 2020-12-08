@@ -64,8 +64,8 @@ function NoteItem({id, title, isCompleted, date}){
     };
     const toggleCompleteTodoState = (id) => {
         return (e) => {
-        const isComplete = !isCompleted;
-        dispatch({type:'TOGGLE_COMPLETE_NOTE_STATE', payload:{note: {id, title, isComplete, date}}})
+        const toggleCompleteState = !isCompleted;
+        dispatch({type:'TOGGLE_COMPLETE_NOTE_STATE', payload:{note: {id, title, isCompleted: toggleCompleteState, date}}})
         }
     }
    
