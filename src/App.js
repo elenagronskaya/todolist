@@ -13,7 +13,7 @@ function App() {
           <Switch>
             <Route exact path="/"  component={HomePage} />
             <Route exact path="/todos" component={Todos} />
-            <Route path="/todos/:id" component={TodosDetailsPage} />
+            <Route path="/todos/:todoId" component={TodosDetailsPage} />
           </Switch>
     </BrowserRouter>
   );

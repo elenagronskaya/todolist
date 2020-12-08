@@ -1,7 +1,14 @@
 import { handleActions } from 'redux-actions';
-import { addTodoSuccess, addTodoRequest, deleteTodoSuccess, deleteTodoError, deleteTodoRequest, addTodoError,toggleCompleteState,
+
+
+import { addTodoSuccess, addTodoRequest, deleteTodoSuccess, deleteTodoError, deleteTodoRequest, 
+    addTodoError,toggleCompleteState,
 fetchTodosRequest, fetchTodosSuccess, fetchTodosError,
-getTodoByIdRequest, getTodoByIdError, getTodoByIdSuccess} from './actions';
+getTodoByIdRequest, getTodoByIdError, getTodoByIdSuccess,
+updateTodoItemRequest, updateTodoItemSuccess, updateTodoItemError, 
+getTodoNotesRequest,
+getTodoNotesSuccess,
+getTodoNotesError,} from './actions';
 
 
 const initialState = {
@@ -11,16 +18,22 @@ const initialState = {
     todoDetailItem: {
         title: '',
         date: '',
-    }
+    },
+    todoNotes: []
   
 };
 export const todosReducer = handleActions({
+    [addTodoRequest] : (state) => ({
+        ...state,
+        error: null,
+        loading: true,
+    }),
     [addTodoSuccess]: (state, { payload: { todoItem } }) => {
         return {
         ...state,
         todos: [
             ...state.todos,
-            todoItem
+            {...todoItem}
         ],
         error: null,
         loading: false,
@@ -31,11 +44,29 @@ export const todosReducer = handleActions({
         loading: false,
         error: payload,
     }},
-    [addTodoRequest] : (state) => ({
+    
+    [getTodoNotesRequest] : (state) => ({
         ...state,
         error: null,
         loading: true,
     }),
+
+    [getTodoNotesSuccess]: (state, { payload: { todoNotes } }) => {
+        return {
+        ...state,
+        error: null,
+        loading: false,
+        todoNotes,
+
+    }},
+    [getTodoNotesError] : (state, {payload}) => { 
+        return  {
+        ...state,
+        loading: false,
+        error: payload,
+    }},
+    
+
 
     [toggleCompleteState]: (state, {payload: {id}}) => {
         return {
@@ -79,6 +110,7 @@ export const todosReducer = handleActions({
         ...state,
         loading: false,
         todos,
+        todoDetailItem: null,
     }),
     [fetchTodosError] : (state, {payload}) => ({
         ...state,
@@ -103,6 +135,22 @@ export const todosReducer = handleActions({
         loading: false,
         error: payload,
         // todoDetailItem: null,
+    }),
+    [updateTodoItemRequest] : (state) => ({
+        ...state,
+        error: null,
+        loading: true,
+    }),
+    [updateTodoItemSuccess] : (state, {payload: {todoItem}}) => {
+        return{
+        ...state,
+        loading: false,
+        todoDetailItem: {...todoItem},
+    }},
+    [updateTodoItemError] : (state, {payload}) => ({
+        ...state,
+        loading: false,
+        error: payload,
     }),
 
 }, initialState)

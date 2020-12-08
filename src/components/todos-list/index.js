@@ -26,7 +26,7 @@ function Alert(props) {
 const TodosList = () => {
     const dispatch = useDispatch();
     const alert = useSelector(selectAlert);
-    const [openAddTodoList, setOpeAddTodoList] = useState(false);
+    const [openAddTodoList, setOpenAddTodoList] = useState(false);
     
     
     const {
@@ -37,23 +37,13 @@ const TodosList = () => {
     
     
     const handleClickOpen = () => {
-        setOpeAddTodoList(true);
+        setOpenAddTodoList(true);
       };
       const handleClose = (e) => {
-        setOpeAddTodoList(false);
+        setOpenAddTodoList(false);
         dispatch({type: 'REMOVE_ALERT'})
       };
     
-    
-    
-    // const deleteTodo = (id) => {
-    //     return () => { 
-    //         dispatch({type: 'DELETE_TODO', payload: { id }});
-    //         dispatch({type: 'SET_ALERT', payload: {type: 'success', msg: `${id} id has been deleted`}})
-    
-    //         }
-        
-    // };
     useEffect(() => {
        dispatch(fetchTodos());
     }, [dispatch]
@@ -82,12 +72,11 @@ const TodosList = () => {
                             </CardContent>
                         </CardActionArea>
                     </Card>
-            {/* <Button onClick={deleteTodo(id)} variant="contained">
-                <ClearIcon color="primary"></ClearIcon>
-            </Button> */}
                 </Grid>
             ))}
-            <AddTodoList openAddTodoList={openAddTodoList} setOpeAddTodoList={setOpeAddTodoList} />
+            <AddTodoList openAddTodoList={openAddTodoList} setOpenAddTodoList={setOpenAddTodoList}
+            isUpdate={false} dispatchActionName={'ADD_TODO'} updateItem = {null}
+            />
             
             <Button variant="contained" color="primary" onClick={handleClickOpen}>Add todo</Button>
         

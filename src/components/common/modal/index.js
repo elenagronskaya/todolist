@@ -11,13 +11,15 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { v4 as uuidv4} from 'uuid';
 
 
-const AddTodoList = ({openAddTodoList, setOpeAddTodoList}) => {
+const AddTodoList = ({openAddTodoList, setOpenAddTodoList, isUpdate, dispatchActionName, updateItem}) => {
     
-    const [todoTitle, setTodoTitle] = useState('');
+    const [todoTitle, setTodoTitle] = useState(isUpdate ? updateItem.title : '');
     const dispatch = useDispatch();
+    const titleText = isUpdate ? 'Update Todo Items':'Add Todo Items';
 
+     
     const handleClose = (e) => {
-        setOpeAddTodoList(false);
+        setOpenAddTodoList(false);
       };
       const handleChange = (e) => {
         setTodoTitle(e.target.value)
@@ -27,11 +29,13 @@ const AddTodoList = ({openAddTodoList, setOpeAddTodoList}) => {
         if(todoTitle) {
         const newDate = new Date().toISOString();
         const todoItem ={
-            id: uuidv4(),
-            date: newDate,
+            id: isUpdate? updateItem.id : uuidv4(),
+            date: isUpdate ? updateItem.date : newDate,
             title: todoTitle,
         }
-        dispatch({type: 'ADD_TODO', payload: {todoItem: todoItem }});
+
+        //'ADD_TODO'
+        dispatch({type: dispatchActionName, payload: {todoItem: todoItem }});
         setTodoTitle('');
         }
     }  
@@ -39,7 +43,7 @@ const AddTodoList = ({openAddTodoList, setOpeAddTodoList}) => {
     return(
 
         <Dialog open={openAddTodoList} onClose={handleClose} aria-labelledby="form-dialog-title">
-            <DialogTitle>Add Todo Items</DialogTitle>
+            <DialogTitle>{titleText}</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
                         To subscribe to this website, please enter your email address here. We will send updates
@@ -53,7 +57,7 @@ const AddTodoList = ({openAddTodoList, setOpeAddTodoList}) => {
                         <ClearIcon color="primary"></ClearIcon>
                     </Button>
                     <Button type="submit" onClick={handleClose} color="primary">
-                        Submit
+                        {isUpdate? 'Update' : 'Add'}
                     </Button>
                 </DialogActions>
                 </form>

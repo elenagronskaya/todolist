@@ -15,14 +15,23 @@ import {
     getTodoById,
     getTodoByIdRequest,
     getTodoByIdSuccess,
-    getTodoByIdError
+    getTodoByIdError,
+    updateTodoItem,
+    updateTodoItemError,
+    updateTodoItemRequest,
+    updateTodoItemSuccess,
+    getTodoNotes,
+    getTodoNotesRequest,
+    getTodoNotesSuccess,
+    getTodoNotesError
+
 } from './actions'
 
 import { setAlert } from '../alert/actions'
 
 
 
-import {getTodos, createTodo, deleteTodo as removeTodo, updateTodo, fetchTodoById} from '../../api';
+import {getTodos, createTodo, deleteTodo as removeTodo, fetchTodoById, updateTodo, getTodoNotes as apiGetTodoNotes} from '../../api';
 
 function* fetchTodosHandler(){
     yield put(fetchTodosRequest())
@@ -64,12 +73,24 @@ function* AddTodoHandler({payload: {todoItem}}){
         yield put(addTodoError(error));
     }
 }
-
-function* GetTodoByIdHandler({payload: {id}}){
-    yield put(getTodoByIdRequest());
+function* GetTodoNotesHandler({payload: {todoId}}){
+    yield put(getTodoNotesRequest());
     
     try{ 
-        const todoItem = yield call(fetchTodoById, id);
+        const todoNotes = yield call(apiGetTodoNotes, {todoId});
+        yield put(getTodoNotesSuccess({todoNotes}));
+    }catch(error) {
+        yield put(getTodoNotesError(error));
+    }
+
+}
+
+function* GetTodoByIdHandler({payload: {todoId}}){
+    yield put(getTodoByIdRequest());
+    try{ 
+        debugger;
+        const todoItem = yield call(fetchTodoById, {todoId});
+        debugger;
         yield put(getTodoByIdSuccess({todoItem}));
         // yield put(setAlert({type: 'success', msg: 'Todos successfully added!'}));
     }catch(error)
@@ -77,6 +98,19 @@ function* GetTodoByIdHandler({payload: {id}}){
         yield put(getTodoByIdError(error));
     }
 }
+
+function* UpdateTodoItem({ payload: {todoItem}}) {
+    yield put(updateTodoItemRequest())
+    try{
+       yield call(updateTodo, {todoItem});
+        yield put(updateTodoItemSuccess({todoItem}))
+        yield put(setAlert({type: 'success', msg: 'Item has been deleted!'}));
+    }catch(error)
+    {
+        yield put(updateTodoItemError(error))
+    }
+}
+
 
 
 
@@ -86,6 +120,8 @@ export function* todosSaga(){
     yield takeEvery(deleteTodo, deleteTodoHandler);
     yield takeLatest(addTodo, AddTodoHandler);
     yield takeLatest(getTodoById, GetTodoByIdHandler);
+    yield takeLatest(updateTodoItem, UpdateTodoItem);
+    yield takeLatest(getTodoNotes, GetTodoNotesHandler)
     
     
 }
