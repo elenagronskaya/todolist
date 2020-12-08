@@ -8,7 +8,10 @@ getTodoByIdRequest, getTodoByIdError, getTodoByIdSuccess,
 updateTodoItemRequest, updateTodoItemSuccess, updateTodoItemError, 
 getTodoNotesRequest,
 getTodoNotesSuccess,
-getTodoNotesError,} from './actions';
+getTodoNotesError,
+addNoteRequest, addNoteSuccess, addNoteError,
+deleteNoteError, deleteNoteRequest, deleteNoteSuccess,
+toggleCompleteNoteStateRequest, toggleCompleteNoteStateSuccess, toggleCompleteNoteStateError} from './actions';
 
 
 const initialState = {
@@ -45,6 +48,52 @@ export const todosReducer = handleActions({
         error: payload,
     }},
     
+
+
+    [addNoteRequest] : (state) => ({
+        ...state,
+        error: null,
+        loading: true,
+    }),
+    [addNoteSuccess]: (state, { payload: { note } }) => {
+        return {
+        ...state,
+        todoNotes: [
+            ...state.todoNotes,
+            {...note}
+        ],
+        error: null,
+        loading: false,
+    }},
+    [addNoteError] : (state, {payload}) => { 
+        return  {
+        ...state,
+        loading: false,
+        error: payload,
+    }},
+
+    [deleteNoteRequest] : (state) => ({
+            ...state,
+            error: null,
+            loading: true,
+        }),
+
+    [deleteNoteSuccess]: (state, { payload: { id } }) => {
+        return {
+        ...state,
+        todoNotes: [
+            ...state.todoNotes.filter((item) => item.id !== id)
+        ],
+        loading: false,
+    }},
+
+    [deleteNoteError] : (state, {payload}) => ({
+        ...state,
+        loading: false,
+        error: payload,
+    }),
+   
+    
     [getTodoNotesRequest] : (state) => ({
         ...state,
         error: null,
@@ -67,19 +116,33 @@ export const todosReducer = handleActions({
     }},
     
 
+    [toggleCompleteNoteStateRequest]: (state) => ({
+        ...state,
+        error: null,
+        loading: true,
+    }),
 
-    [toggleCompleteState]: (state, {payload: {id}}) => {
+    [toggleCompleteNoteStateSuccess]: (state, {payload: {note}}) => {
         return {
         ...state,
-        todos: [
-            ...state.todos.map((item) => {
-                if (item.id === id) {
-                    item.isCompleted = !item.isCompleted;
+        loading: false,
+        error: null,
+        todoNotes: [
+            ...state.todoNotes.map((item) => {
+                if (item.id === note.id) {
+                   return {...note}
                 }
-                return item;
+                return {...item};
             })
         ]
     }},
+
+    [toggleCompleteNoteStateError] : (state, {payload}) => ({
+        ...state,
+        loading: false,
+        error: payload,
+    }),
+    
     [deleteTodoSuccess]: (state, { payload: { id } }) => {
         return {
         ...state,

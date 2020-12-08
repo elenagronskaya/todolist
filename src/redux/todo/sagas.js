@@ -4,26 +4,46 @@ import {
     deleteTodoError,
     deleteTodoRequest,
     deleteTodo,
+
+    addNote,
+    addNoteSuccess,
+    addNoteRequest,
+    addNoteError,
+
+    deleteNoteSuccess,
+    deleteNoteError,
+    deleteNoteRequest,
+    deleteNote,
+
     addTodo,
     addTodoSuccess,
     addTodoRequest,
     addTodoError,
+
     fetchTodos,
     fetchTodosError, 
     fetchTodosRequest, 
     fetchTodosSuccess,
+
     getTodoById,
     getTodoByIdRequest,
     getTodoByIdSuccess,
     getTodoByIdError,
+
     updateTodoItem,
     updateTodoItemError,
     updateTodoItemRequest,
     updateTodoItemSuccess,
+
     getTodoNotes,
     getTodoNotesRequest,
     getTodoNotesSuccess,
-    getTodoNotesError
+    getTodoNotesError,
+
+    toggleCompleteNoteState,
+    toggleCompleteNoteStateRequest,
+    toggleCompleteNoteStateSuccess,
+    toggleCompleteNoteStateError
 
 } from './actions'
 
@@ -31,7 +51,9 @@ import { setAlert } from '../alert/actions'
 
 
 
-import {getTodos, createTodo, deleteTodo as removeTodo, fetchTodoById, updateTodo, getTodoNotes as apiGetTodoNotes} from '../../api';
+import {getTodos, createTodo, deleteTodo as removeTodo,
+     fetchTodoById, updateTodo, getTodoNotes as apiGetTodoNotes,
+      deleteNote as removeNote, apiAddTodoNote, apiUpdateNote} from '../../api';
 
 function* fetchTodosHandler(){
     yield put(fetchTodosRequest())
@@ -97,6 +119,29 @@ function* GetTodoByIdHandler({payload: {todoId}}){
     {
         yield put(getTodoByIdError(error));
     }
+};
+
+function* AddTodoNoteHandler({payload: {note}}){
+    yield put(addNoteRequest());
+    
+    try{ 
+        yield call(apiAddTodoNote, {note});
+        yield put(addNoteSuccess({note}));
+    }catch(error) {
+        yield put(addNoteError(error));
+    }
+
+}
+function* deleteNoteHandler({payload: {id}}){
+    yield put(deleteNoteRequest())
+    
+    try{
+        const notes = yield call(removeNote, id);
+        yield put(deleteNoteSuccess({id}))
+    }catch(error)
+    {
+        yield put(deleteNoteError(error))
+    }
 }
 
 function* UpdateTodoItem({ payload: {todoItem}}) {
@@ -111,6 +156,18 @@ function* UpdateTodoItem({ payload: {todoItem}}) {
     }
 }
 
+function* ToggleCompleteNoteState ({payload:{note}}){
+    yield put(toggleCompleteNoteStateRequest())
+    
+    try{
+        yield call(apiUpdateNote, note);
+        yield put(toggleCompleteNoteStateSuccess({note}))
+    }catch(error)
+    {
+        yield put(toggleCompleteNoteStateError(error))
+    }
+}
+
 
 
 
@@ -118,10 +175,14 @@ function* UpdateTodoItem({ payload: {todoItem}}) {
 export function* todosSaga(){
     yield takeLatest(fetchTodos, fetchTodosHandler);
     yield takeEvery(deleteTodo, deleteTodoHandler);
+    yield takeEvery(deleteNote, deleteNoteHandler);
     yield takeLatest(addTodo, AddTodoHandler);
+    yield takeLatest(addNote, AddTodoNoteHandler);
     yield takeLatest(getTodoById, GetTodoByIdHandler);
     yield takeLatest(updateTodoItem, UpdateTodoItem);
-    yield takeLatest(getTodoNotes, GetTodoNotesHandler)
+    yield takeLatest(getTodoNotes, GetTodoNotesHandler);
+    yield takeLatest(toggleCompleteNoteState, ToggleCompleteNoteState);
+    
     
     
 }

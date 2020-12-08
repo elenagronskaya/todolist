@@ -12,10 +12,10 @@ import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import Checkbox from '@material-ui/core/Checkbox';
 import ClearIcon from '@material-ui/icons/Clear';
-import NoteItem from './notes-item';
+import NoteItem from './noteitem';
 import { useEffect , useState} from "react";
 import { getTodoNotes } from '../../redux/todo/actions';
-
+import { v4 as uuidv4} from 'uuid';
 
 
 function Alert(props) {
@@ -52,17 +52,30 @@ function TodoNotes ({todoId}){
     const {todoNotes, loading, error} = useSelector(selectTodos);
     // const alert = useSelector(selectAlert);
     const dispatch = useDispatch();
-    // const [title, setTitle] = useState('');
+    const [title, setTitle] = useState('');
 
-    const handleClose = (e) => {
-        dispatch({type: 'REMOVE_ALERT'})
-    }
     
     useEffect(() => {
         dispatch(getTodoNotes({todoId}))
     }, [dispatch]
 );
-   
+const addNote = (e) =>{
+    e.preventDefault()
+
+    if(title) {
+    const newDate = new Date().toISOString();
+    const note ={
+        id: uuidv4(),
+        date: newDate,
+        title,
+    }
+    dispatch({type: 'ADD_NOTE', payload: {note: note }});
+    setTitle('');
+    }
+};
+const handleChange = (e) => {
+    setTitle(e.target.value)
+};
     
     // const deleteTodo = (id) => {
     //     return () => { 
@@ -109,15 +122,20 @@ function TodoNotes ({todoId}){
     }
 
     return(
-        <>
-        
-        {todoNotes.map((note) => ( 
-
-            <NoteItem key={note.id} {...note}/>
-                
+        <Card container>
             
-            ))} 
-        </>
+            <form onSubmit={addNote}>
+                <TextField onChange={handleChange} value={title} label="addTodo" variant="outlined" fullWidth/>
+                <Button type='submit' variant="contained" color="primary" >Add note</Button>
+                
+            </form>
+            {todoNotes.map((note) => ( 
+                
+                <NoteItem key={note.id} {...note}/>
+                    
+                
+                ))} 
+        </Card>
     )
 }
 

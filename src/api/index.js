@@ -30,6 +30,9 @@ export const updateTodo = async ({todoItem}) =>{
 export const deleteTodo = async (id) => {
     await axios.delete(`${url}/todos/${id}.json`);
 }
+export const deleteNote = async (id) => {
+    await axios.delete(`${url}/notes/${id}.json`);
+}
 
 export const fetchTodoById = async ({todoId}) => {
     debugger;
@@ -53,6 +56,18 @@ export const getTodoNotes = async ({todoId}) => {
 
    return todoNotes;
     
+}
+
+export const apiAddTodoNote = async({note}) => {
+    const response = await axios.post(`${url}/notes.json`, {...note}) ;
+    return response.data;
+}
+
+export const apiUpdateNote = async ({note}) =>{ 
+    debugger;
+    const response =  await axios.patch(`${url}/notes/${note.id}.json`, {...note}) ;
+    debugger;
+    return response.data;
 }
 
 

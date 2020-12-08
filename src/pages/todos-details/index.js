@@ -10,6 +10,7 @@ import { useHistory } from "react-router-dom";
 import AddTodoList from '../../components/common/modal';
 
 
+
 export default function TodosDetailsPage(props){
     const dispatch = useDispatch();
     const [openAddTodoList, setOpenAddTodoList] = useState(false);
@@ -34,6 +35,8 @@ export default function TodosDetailsPage(props){
             }
             
         };
+        
+        
     const {
         loading,
         todoDetailItem, 
@@ -53,6 +56,7 @@ export default function TodosDetailsPage(props){
     
     return(
     <div>
+       
         <Typography variant="h5">{todoDetailItem.title}</Typography> 
         <Typography variant="caption" color="textSecondary">{moment(newDate).format('MM/DD/YYYY h:mm')}</Typography>
         <TodoNotes todoId={todoId}/>

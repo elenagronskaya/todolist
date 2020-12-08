@@ -7,6 +7,16 @@ export const {
     addTodoSuccess, 
     addTodoError, 
 
+    addNote,
+    addNoteRequest, 
+    addNoteSuccess, 
+    addNoteError, 
+
+    deleteNoteRequest, 
+    deleteNote, 
+    deleteNoteSuccess,
+    deleteNoteError, 
+
     deleteTodoRequest, 
     deleteTodo, 
     deleteTodoSuccess,
@@ -44,6 +54,16 @@ export const {
     DELETE_TODO_SUCCESS: identity,
     DELETE_TODO_ERROR: identity,
 
+    ADD_NOTE: identity,
+    ADD_NOTE_REQUEST: identity,
+    ADD_NOTE_SUCCESS: identity,
+    ADD_NOTE_ERROR: identity,
+
+    DELETE_NOTE_REQUEST: identity,
+    DELETE_NOTE: identity,
+    DELETE_NOTE_SUCCESS: identity,
+    DELETE_NOTE_ERROR: identity,
+
     FETCH_TODOS: identity,
     FETCH_TODOS_REQUEST: identity,
     FETCH_TODOS_SUCCESS: identity,
@@ -66,8 +86,12 @@ export const {
 
 });
 
-export const {toggleCompleteState} = createActions ({
-    TOGGLE_COMPLETE_STATE: identity,
+export const {toggleCompleteNoteState, toggleCompleteNoteStateRequest, toggleCompleteNoteStateSuccess, toggleCompleteNoteStateError} = createActions ({
+    TOGGLE_COMPLETE_NOTE_STATE: identity,
+    TOGGLE_COMPLETE_NOTE_STATE_REQUEST: identity,
+    TOGGLE_COMPLETE_NOTE_STATE_SUCCESS: identity,
+    TOGGLE_COMPLETE_NOTE_STATE_ERROR: identity,
+
     
 })
 
