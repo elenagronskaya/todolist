@@ -29,7 +29,7 @@ const AddTodoList = ({openAddTodoList, setOpenAddTodoList, isUpdate, dispatchAct
         if(todoTitle) {
         const newDate = new Date().toISOString();
         const todoItem ={
-            id: isUpdate? updateItem.id : uuidv4(),
+            id: isUpdate? updateItem.id : null,
             date: isUpdate ? updateItem.date : newDate,
             title: todoTitle,
         }

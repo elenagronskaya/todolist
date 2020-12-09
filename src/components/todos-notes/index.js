@@ -24,33 +24,15 @@ function Alert(props) {
   
 
 const useStyles = makeStyles({
-    root: {
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center",
-    },
-
-
-    title: {
-      fontSize: 18,
-      paddingRight:10,
-      fontWeight: 700,
-    },
-
-    date: {
-      paddingRight: 25,
-    },
-    button: {
-        cursor: "pointer",
-        
-    }
+   form: {
+       marginTop:20,
+   }
   });
 
 function TodoNotes ({todoId}){
     const classes = useStyles();
    
     const {todoNotes, loading, error} = useSelector(selectTodos);
-    // const alert = useSelector(selectAlert);
     const dispatch = useDispatch();
     const [title, setTitle] = useState('');
 
@@ -68,6 +50,7 @@ const addNote = (e) =>{
         id: uuidv4(),
         date: newDate,
         title,
+        todoItemId: todoId
     }
     dispatch({type: 'ADD_NOTE', payload: {note: note }});
     setTitle('');
@@ -77,37 +60,7 @@ const handleChange = (e) => {
     setTitle(e.target.value)
 };
     
-    // const deleteTodo = (id) => {
-    //     return () => { 
-    //         dispatch({type: 'DELETE_TODO', payload: { id }});
-    //         dispatch({type: 'SET_ALERT', payload: {type: 'success', msg: `${id} id has been deleted`}})
     
-    //         }
-        
-    // };
-    // const toggleCompleteTodoState = (id) => {
-    //     return (e) => {
-    //     dispatch({type:'TOGGLE_COMPLETE_STATE', payload:{id}})
-    //     }
-    // }
-    // const addTodo = (e) =>{
-    //     e.preventDefault()
-
-    //     if(title) {
-    //     const newDate = new Date().toISOString();
-    //     const todoItem ={
-    //         id: newDate,
-    //         date: newDate,
-    //         title,
-    //     }
-    //     dispatch({type: 'ADD_TODO', payload: {todoItem: todoItem }});
-    //     dispatch({type: 'SET_ALERT', payload: {type: 'success', msg: 'Todo item is created successful'}})
-    //     setTitle('');
-    //     }else{
-    //         dispatch({type: 'SET_ALERT', payload: {type: 'error', msg: 'Todo title is required'}})
-    //     }
-    // }
-
     if (loading){
         return <div>Loading...</div>
     }
@@ -122,11 +75,11 @@ const handleChange = (e) => {
     }
 
     return(
-        <Card container>
+        <div>
             
-            <form onSubmit={addNote}>
-                <TextField onChange={handleChange} value={title} label="addTodo" variant="outlined" fullWidth/>
-                <Button type='submit' variant="contained" color="primary" >Add note</Button>
+            <form onSubmit={addNote} className={classes.form}>
+                <TextField onChange={handleChange} value={title} label="addTodo" variant="outlined" fullWidth />
+                <Button type='submit' variant="contained" color="primary" fullWidth>+ Add note</Button>
                 
             </form>
             {todoNotes.map((note) => ( 
@@ -135,7 +88,7 @@ const handleChange = (e) => {
                     
                 
                 ))} 
-        </Card>
+        </div>
     )
 }
 

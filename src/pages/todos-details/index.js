@@ -7,8 +7,29 @@ import Button from '@material-ui/core/Button';
 import {selectTodos} from '../../redux/todo';
 import TodoNotes from '../../components/todos-notes';
 import { useHistory } from "react-router-dom";
-import AddTodoList from '../../components/common/modal';
+import AddTodoList from '../../components/common/AddTodoList';
+import { makeStyles } from '@material-ui/core/styles';
 
+const useStyles = makeStyles({
+    container: {
+        width: "60%",
+        margin: 10, 
+        margin: "auto",
+    },
+    button: {
+        justifyContent: "flex-end",
+        display: "flex",
+        marginTop: 20,
+        
+    },
+    title: {
+        textTransform: "uppercase",
+        fontWeight: 400,
+    },
+    date: {
+        fontSize: 16
+    }
+})
 
 
 export default function TodosDetailsPage(props){
@@ -16,7 +37,9 @@ export default function TodosDetailsPage(props){
     const [openAddTodoList, setOpenAddTodoList] = useState(false);
     const newDate = new Date().toISOString();
     let history = useHistory();
-    const  {todoId} = props.match.params
+    const  {todoId} = props.match.params;
+    const classes = useStyles();
+
     useEffect(() => {
             dispatch(getTodoById({todoId}))
         }, [dispatch]
@@ -55,20 +78,20 @@ export default function TodosDetailsPage(props){
     
     
     return(
-    <div>
-       
-        <Typography variant="h5">{todoDetailItem.title}</Typography> 
-        <Typography variant="caption" color="textSecondary">{moment(newDate).format('MM/DD/YYYY h:mm')}</Typography>
+    <div className={classes.container}>
+        <div className={classes.button}>
+        <Button onClick={deleteTodo(todoId)} variant="contained" >Delete</Button>
+        <Button variant="contained" color="primary" onClick={handleClickOpen} >Update</Button>
+        </div>
+        <Typography variant="h2" className={classes.title}>{todoDetailItem.title}</Typography> 
+        <Typography variant="caption" className={classes.date} color="textSecondary">{moment(newDate).format('MM/DD/YYYY h:mm')}</Typography>
+        
         <TodoNotes todoId={todoId}/>
-        <Button onClick={deleteTodo(todoId)} variant="contained">Delete</Button>
-        <Button variant="contained" color="primary" onClick={handleClickOpen}>Update</Button>
+        
 
         <AddTodoList openAddTodoList={openAddTodoList} setOpenAddTodoList={setOpenAddTodoList}
             isUpdate={true} dispatchActionName={'UPDATE_TODO_ITEM'} updateItem = {todoDetailItem}
             />
-
-
-
     </div>
     
     )

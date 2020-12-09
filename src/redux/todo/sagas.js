@@ -157,16 +157,12 @@ function* UpdateTodoItem({ payload: {todoItem}}) {
 }
 
 function* ToggleCompleteNoteState ({payload:{note}}){
-    yield put(toggleCompleteNoteStateRequest())
+    // yield put(toggleCompleteNoteStateRequest())
     
     try{
-        debugger;
         yield call(apiUpdateNote, {note});
-        debugger;
         yield put(toggleCompleteNoteStateSuccess({note}))
-    }catch(error)
-    {
-        debugger;
+    }catch(error){
         yield put(toggleCompleteNoteStateError(error))
     }
 }

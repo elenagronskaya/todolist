@@ -3,11 +3,8 @@ import Card from '@material-ui/core/Card';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import CardContent from '@material-ui/core/CardContent';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Button } from '@material-ui/core';
-import { useEffect, useState } from 'react';
-import { selectTodos} from '../../redux/todo/selectors';
-import Snackbar from '@material-ui/core/Snackbar';
 import Checkbox from '@material-ui/core/Checkbox';
 import ClearIcon from '@material-ui/icons/Clear';
 
@@ -18,34 +15,14 @@ const useStyles = makeStyles({
       justifyContent: "space-between",
       alignItems: "center",
     },
-
-
-    title: {
-      fontSize: 18,
-      paddingRight:10,
-      fontWeight: 700,
-    },
-
-    date: {
-      paddingRight: 25,
-    },
     button: {
         cursor: "pointer",
         
     },
-    // completedItem: {
-    //   textDecoration: 'line-through',
-    //   opacity: '0.5',
-    //   '&:hover': {
-    //     textDecoration: 'line-through',
-    //   }
-    // },
-    // todoItem: {
-    //   textDecoration: 'none',
-    //   opacity: '1',
-    //   transition: 'all 350ms ease-out',
-     
-    // },
+    card: {
+      marginTop: 10, 
+
+    }
   });
 
 
@@ -72,10 +49,10 @@ function NoteItem({id, title, isCompleted, date}){
     
 
     return(
-        <Card elevation={3} className={`${classes.todoItem} ${isCompleted ? classes.completedItem : ''}`} onClick={toggleCompleteTodoState(id)}>
-          <Checkbox checked={isCompleted} onChange={toggleCompleteTodoState(id)} inputProps={{ 'aria-label': 'primary checkbox' }} />
+        <Card elevation={3} className={classes.card} onClick={toggleCompleteTodoState(id)}>
             <CardContent key={id} className={classes.root} >
-                <Typography className={classes.title} color="textSecondary" variant="h5" component="h2">{title}</Typography>
+              <Checkbox checked={isCompleted} onChange={toggleCompleteTodoState(id)} inputProps={{ 'aria-label': 'primary checkbox' }} />
+                <Typography  color="textSecondary" variant="h4" component="h2">{title}</Typography>
                 <Typography className={classes.date}>{moment(date).format('MM/DD/YYYY h:mm')}</Typography>
                 <Button className={classes.button} onClick={deleteNote(id)} variant="contained">
                 <ClearIcon color="primary"></ClearIcon>

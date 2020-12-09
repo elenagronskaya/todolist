@@ -20,7 +20,8 @@ export const getTodos = async () => {
 
 export const createTodo = async (todoItem) =>{
     const response = await axios.post(`${url}/todos.json`, {...todoItem}) ;
-    return response;
+    todoItem.id = response.data.name;
+    return todoItem;
 }
 
 export const updateTodo = async ({todoItem}) =>{ 
@@ -35,9 +36,11 @@ export const deleteNote = async (id) => {
 }
 
 export const fetchTodoById = async ({todoId}) => {
-    debugger;
     const response =  await axios.get(`${url}/todos/${todoId}.json`);
-    return response.data;
+   
+    return  {...response.data,
+                id: todoId
+            };
 }
 
 export const getTodoNotes = async ({todoId}) => {
@@ -60,13 +63,14 @@ export const getTodoNotes = async ({todoId}) => {
 
 export const apiAddTodoNote = async({note}) => {
     const response = await axios.post(`${url}/notes.json`, {...note}) ;
+    note.id = response.data.name;
     return response.data;
 }
 
-export const apiUpdateNote = async ({note}) =>{ 
-    debugger;
+export const apiUpdateNote = async ({note}) =>{
+
     const response =  await axios.patch(`${url}/notes/${note.id}.json`, {...note}) ;
-    debugger;
+
     return response.data;
 }
 
