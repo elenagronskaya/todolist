@@ -22,7 +22,8 @@ const initialState = {
         title: '',
         date: '',
     },
-    todoNotes: []
+    todoNotes: [],
+    updating: false,
   
 };
 export const todosReducer = handleActions({
@@ -53,7 +54,8 @@ export const todosReducer = handleActions({
     [addNoteRequest] : (state) => ({
         ...state,
         error: null,
-        loading: true,
+        loading: false,
+        updating: true,
     }),
     [addNoteSuccess]: (state, { payload: { note } }) => {
         return {
@@ -64,18 +66,21 @@ export const todosReducer = handleActions({
         ],
         error: null,
         loading: false,
+        updating: false,
     }},
     [addNoteError] : (state, {payload}) => { 
         return  {
         ...state,
         loading: false,
         error: payload,
+        updating: false,
     }},
 
     [deleteNoteRequest] : (state) => ({
             ...state,
             error: null,
-            loading: true,
+            loading: false,
+            updating: true,
         }),
 
     [deleteNoteSuccess]: (state, { payload: { id } }) => {
@@ -85,12 +90,14 @@ export const todosReducer = handleActions({
             ...state.todoNotes.filter((item) => item.id !== id)
         ],
         loading: false,
+        updating: false,
     }},
 
     [deleteNoteError] : (state, {payload}) => ({
         ...state,
         loading: false,
         error: payload,
+        updating: false,
     }),
    
     

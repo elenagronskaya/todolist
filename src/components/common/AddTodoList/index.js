@@ -17,6 +17,8 @@ const AddTodoList = ({openAddTodoList, setOpenAddTodoList, isUpdate, dispatchAct
     const dispatch = useDispatch();
     const titleText = isUpdate ? 'Update Todo Items':'Add Todo Items';
 
+    const todoLabel = isUpdate ? "Update todo list" : "Add todo list" ;
+
      
     const handleClose = (e) => {
         setOpenAddTodoList(false);
@@ -36,7 +38,7 @@ const AddTodoList = ({openAddTodoList, setOpenAddTodoList, isUpdate, dispatchAct
 
         //'ADD_TODO'
         dispatch({type: dispatchActionName, payload: {todoItem: todoItem }});
-        setTodoTitle('');
+        //setTodoTitle('');
         }
     }  
 
@@ -49,12 +51,12 @@ const AddTodoList = ({openAddTodoList, setOpenAddTodoList, isUpdate, dispatchAct
                         To subscribe to this website, please enter your email address here. We will send updates
                         occasionally.
                     </DialogContentText>
-                <form onSubmit={addTodo}>
-                    <TextField autoFocus onChange={handleChange} value={todoTitle} label="addTodo" variant="outlined" fullWidth />
+                <form onSubmit={addTodo} fullWidth>
+                    <TextField autoFocus onChange={handleChange} value={todoTitle} label={todoLabel} variant="outlined" fullWidth />
                 
                 <DialogActions>
                     <Button onClick={handleClose} color="primary">
-                        <ClearIcon color="primary"></ClearIcon>
+                        Cancel
                     </Button>
                     <Button type="submit" onClick={handleClose} color="primary">
                         {isUpdate? 'Update' : 'Add'}

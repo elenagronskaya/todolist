@@ -110,9 +110,7 @@ function* GetTodoNotesHandler({payload: {todoId}}){
 function* GetTodoByIdHandler({payload: {todoId}}){
     yield put(getTodoByIdRequest());
     try{ 
-        debugger;
         const todoItem = yield call(fetchTodoById, {todoId});
-        debugger;
         yield put(getTodoByIdSuccess({todoItem}));
         // yield put(setAlert({type: 'success', msg: 'Todos successfully added!'}));
     }catch(error)
@@ -158,7 +156,7 @@ function* UpdateTodoItem({ payload: {todoItem}}) {
 
 function* ToggleCompleteNoteState ({payload:{note}}){
     // yield put(toggleCompleteNoteStateRequest())
-    
+ 
     try{
         yield call(apiUpdateNote, {note});
         yield put(toggleCompleteNoteStateSuccess({note}))

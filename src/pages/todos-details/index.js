@@ -7,8 +7,10 @@ import Button from '@material-ui/core/Button';
 import {selectTodos} from '../../redux/todo';
 import TodoNotes from '../../components/todos-notes';
 import { useHistory } from "react-router-dom";
+import DeleteConfirmationDialog from '../../components/common/DeleteConfirmationDialog';
 import AddTodoList from '../../components/common/AddTodoList';
 import { makeStyles } from '@material-ui/core/styles';
+import {Link} from 'react-router-dom';
 
 const useStyles = makeStyles({
     container: {
@@ -17,10 +19,10 @@ const useStyles = makeStyles({
         margin: "auto",
     },
     button: {
-        justifyContent: "flex-end",
-        display: "flex",
-        marginTop: 20,
-        
+    display: "flex",
+    marginTop: 20,
+    justifyContent: "space-between",
+
     },
     title: {
         textTransform: "uppercase",
@@ -28,6 +30,12 @@ const useStyles = makeStyles({
     },
     date: {
         fontSize: 16
+    },
+    buttonContainer: {
+        display: "inline-block"
+    },
+    back: {
+        paddingLeft: 0
     }
 })
 
@@ -39,7 +47,7 @@ export default function TodosDetailsPage(props){
     let history = useHistory();
     const  {todoId} = props.match.params;
     const classes = useStyles();
-
+    const [open, setOpen] = useState(false);
     useEffect(() => {
             dispatch(getTodoById({todoId}))
         }, [dispatch]
@@ -49,6 +57,14 @@ export default function TodosDetailsPage(props){
         setOpenAddTodoList(true);
       };
 
+
+      const onClose = (e)=> {
+          setOpen(false);
+      }
+      const openConfirmDeleteDialog = () => {
+        setOpen(!open);
+      }
+    
     const deleteTodo = (id) => {
         return () => { 
             dispatch({type: 'DELETE_TODO', payload: { id }});
@@ -64,24 +80,33 @@ export default function TodosDetailsPage(props){
         loading,
         todoDetailItem, 
         error} = useSelector(selectTodos);
-        if(!todoDetailItem){
+        
+        
+    if(!todoDetailItem){
             return (
                 <div>empty</div>
             )
-        }
-        if(error){
+    }
+        
+    if(error){
             return(
                 <div>error</div>
             )
-        }
+    }
 
     
     
     return(
     <div className={classes.container}>
+        
         <div className={classes.button}>
-        <Button onClick={deleteTodo(todoId)} variant="contained" >Delete</Button>
-        <Button variant="contained" color="primary" onClick={handleClickOpen} >Update</Button>
+
+        <Button color="primary" component={Link} to={`/todos/`} className={classes.back}>go back</Button> 
+        <div className={classes.buttonContairer} >
+        <Button onClick={openConfirmDeleteDialog} color='secondary' >Delete</Button>
+        <Button color="primary" onClick={handleClickOpen} >Update</Button>
+        </div>
+        
         </div>
         <Typography variant="h2" className={classes.title}>{todoDetailItem.title}</Typography> 
         <Typography variant="caption" className={classes.date} color="textSecondary">{moment(newDate).format('MM/DD/YYYY h:mm')}</Typography>
@@ -92,6 +117,8 @@ export default function TodosDetailsPage(props){
         <AddTodoList openAddTodoList={openAddTodoList} setOpenAddTodoList={setOpenAddTodoList}
             isUpdate={true} dispatchActionName={'UPDATE_TODO_ITEM'} updateItem = {todoDetailItem}
             />
+
+        {open && <DeleteConfirmationDialog title="Todo List" open={open} onClose={onClose} onHandlerToRun={deleteTodo(todoId)}/>}
     </div>
     
     )

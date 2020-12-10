@@ -21,9 +21,9 @@ export default function Navigation({items}) {
               ))}
             </Box>
             
-            <Box component="span">
+            {/* <Box component="span">
               <Button color="inherit" className={styles.button}>Login</Button>
-            </Box>
+            </Box> */}
           
           </Toolbar>
         </AppBar>

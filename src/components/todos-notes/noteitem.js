@@ -6,7 +6,7 @@ import CardContent from '@material-ui/core/CardContent';
 import { useDispatch } from 'react-redux';
 import { Button } from '@material-ui/core';
 import Checkbox from '@material-ui/core/Checkbox';
-import ClearIcon from '@material-ui/icons/Clear';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 
 const useStyles = makeStyles({
@@ -14,6 +14,8 @@ const useStyles = makeStyles({
       display: "flex",
       justifyContent: "space-between",
       alignItems: "center",
+      padding: "10px"
+      
     },
     button: {
         cursor: "pointer",
@@ -22,7 +24,15 @@ const useStyles = makeStyles({
     card: {
       marginTop: 10, 
 
-    }
+    },
+
+    // cardcontent: {
+    //   padding: "7px",
+    //   "&:last-child": {
+    //     paddingBottom: "12px"
+    //   }
+    // }
+
   });
 
 
@@ -54,9 +64,7 @@ function NoteItem({id, title, isCompleted, date}){
               <Checkbox checked={isCompleted} onChange={toggleCompleteTodoState(id)} inputProps={{ 'aria-label': 'primary checkbox' }} />
                 <Typography  color="textSecondary" variant="h4" component="h2">{title}</Typography>
                 <Typography className={classes.date}>{moment(date).format('MM/DD/YYYY h:mm')}</Typography>
-                <Button className={classes.button} onClick={deleteNote(id)} variant="contained">
-                <ClearIcon color="primary"></ClearIcon>
-                </Button> 
+                <DeleteIcon color="primary" onClick={deleteNote(id)} className={classes.button}  variant="contained"></DeleteIcon>
             </CardContent>
         </Card>
     )

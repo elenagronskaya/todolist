@@ -73,7 +73,7 @@ const TodosList = () => {
 
     return(
         <>
-        <Button variant="contained" color="primary" onClick={handleClickOpen} className={classes.button}>Add todo</Button>
+        <Button  color="primary" onClick={handleClickOpen} className={classes.button}>+ Add todo</Button>
          <Grid container>
             {todos.map(({title, id, date}) => (
                 <Grid item xs = {3} key ={id} >
